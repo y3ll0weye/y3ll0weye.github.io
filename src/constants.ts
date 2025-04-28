@@ -16,20 +16,14 @@ export const SOCIALS = [
     icon: IconGitHub,
   },
   {
-    name: "X",
-    href: "https://x.com/username",
-    linkTitle: `${SITE.title} on X`,
-    icon: IconBrandX,
-  },
-  {
     name: "LinkedIn",
-    href: "https://www.linkedin.com/in/username/",
+    href: "https://www.linkedin.com/in/ibrahim-ahmed-b1bb50267/",
     linkTitle: `${SITE.title} on LinkedIn`,
     icon: IconLinkedin,
   },
   {
     name: "Mail",
-    href: "mailto:yourmail@gmail.com",
+    href: "ibrahim.a101@outlook.com",
     linkTitle: `Send an email to ${SITE.title}`,
     icon: IconMail,
   },

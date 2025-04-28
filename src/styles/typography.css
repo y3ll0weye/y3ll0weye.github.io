@@ -54,3 +54,18 @@
     text-decoration: var(--shiki-dark-text-decoration) !important;
   }
 }
+
+
+@plugin '@tailwindcss/typography';
+
+@layer base {
+  /* other classes */
+
+  /* Katex text color */
+  .prose .katex-display {
+    @apply text-foreground;
+  }
+
+  /* ===== Code Blocks & Syntax Highlighting ===== */
+  /* other classes */
+}
