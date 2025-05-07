@@ -11,7 +11,7 @@ import rehypeKatex from "rehype-katex";
 export default defineConfig({
   site: https://y3ll0weye.github.io/,
   output: 'static',
-  base: '/y3ll0weye.github.io/',
+  base: '/',
   integrations: [
     sitemap({
       filter: page => SITE.showArchives || !page.endsWith("/archives"),
