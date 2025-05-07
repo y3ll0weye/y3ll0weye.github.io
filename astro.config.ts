@@ -9,7 +9,9 @@ import rehypeKatex from "rehype-katex";
 
 // https://astro.build/config
 export default defineConfig({
-  site: SITE.website,
+  site: https://y3ll0weye.github.io/,
+  output: 'static',
+  base: '/y3ll0weye.github.io/',
   integrations: [
     sitemap({
       filter: page => SITE.showArchives || !page.endsWith("/archives"),
